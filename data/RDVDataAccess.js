@@ -6,6 +6,11 @@ exports.AddRdv = (rdvEntity, callback) => {
         callback(err, rdv)
     })
 }
+exports.ListByRDV = (rdv, callback) => {
+    RDV.find( function (err, rdvs) {
+        callback(err, rdvs)
+    })
+}
 
 //Delete
 exports.DeleteRdvyId = (id, callback) => {

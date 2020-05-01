@@ -71,7 +71,7 @@ module.exports = {
                 }, privateKey.toString(), {
                   algorithm: 'RS256'
                 });
-                rs.status(200).json(responsRender(token, "", ServerMessage.OK))
+                rs.status(200).json(responsRender(token,user.email, "", ServerMessage.OK))
               } else {
                 return rs.status(200).json(responsRender(null, ServerErrors.INVALID_CREDENTIALS, ""))
               }

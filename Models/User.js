@@ -11,9 +11,10 @@ let UserSchema = new Schema({
     date_naissance:Date,
     password: String,
     tel: String,
-    IsActive: Boolean,
-    Role: String,
+   
     genre:String,
+    file:String,
+    remarque:String,
     
     specialite:String,
     fix:String,
@@ -22,8 +23,9 @@ let UserSchema = new Schema({
     assurance_maladie:String,
     horaire_travail:String,
     CreatedAt: Date,
-    UpdatedAt: Date
-
+    UpdatedAt: Date,
+    IsActive: Boolean,
+    Role: String
 
 
 });

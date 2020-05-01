@@ -11,7 +11,10 @@
             this.tel = "",
             this.genre="",
             this.isActive = "",
+            this.file="",
            
+            this.remarque="",
+
             this.specialite="",
             this.fix="",
             this.atitude_professionelle="",

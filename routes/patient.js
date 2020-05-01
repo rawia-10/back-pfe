@@ -11,7 +11,7 @@ router.post('/patient/login',security.patientLogin)
 router.post('/patient/rdv/add',patientController.addrdv)
 router.get('/patient/list',patientController.list)
 router.get('/patient/get/:id',patientController.getpatient)
-router.put('/patient/modify', patientController.update)
+router.put('/patient/modify/:id', patientController.update)
 router.get('/patient/auth/profile',patientController.profile);
 
 

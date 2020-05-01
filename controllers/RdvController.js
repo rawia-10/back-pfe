@@ -1,6 +1,5 @@
 var responsRender = require("../middleware/responseRender");
 var rdvEntity = require("../Entities/RDV");
-
 var mapper = require("automapper-js");
 var ServerMessage = require("../constant/messages");
 var ServerErrors = require("../constant/errors");
@@ -60,11 +59,11 @@ module.exports = {
          
      
     },
-
+   
     getAllRdv:(rq,rs,nx)=>{
        
         database.connectToDb()
-        rdvDataAccess.ListBySecretaire(Id,(err,rdvList)=>{
+        rdvDataAccess.getByCreteria(Id,(err,rdvList)=>{
           database.disconnect()
           if (err) {
             return rs.status(500).json(responsRender(null, ServerErrors.SERVER_ERROR, ""))
@@ -73,6 +72,13 @@ module.exports = {
           }
         })
       },
+   
+   
 
+      
+
+
+
+     
      
 }

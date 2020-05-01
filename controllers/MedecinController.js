@@ -10,7 +10,11 @@ var userDataAccess = require("../data/UserDataAccess");
 var rdvDataAccess = require("../data/RDVDataAccess")
 var bcrypt = require("bcryptjs");
 var roles = require("../constant/appRoles");
-var decoder = require("../tools/AuthorizationDecode")
+var decoder = require("../tools/AuthorizationDecode");
+const rTrim = require('../tools/lTrim');
+var responsRender = require("../middleware/responseRender");
+var ServerMessage = require("../constant/messages");
+var ServerErrors = require("../constant/errors");
 
 module.exports = {
   register: (rq, rs, nx) => {
@@ -29,6 +33,7 @@ module.exports = {
       fix:Joi.string().allow(""),
       atitude_professionelle:Joi.string().allow(""),
       image:Joi.string().allow(""),
+      // file:Joi.originalname().allow(""),
       assurance_maladie:Joi.string().allow(""),
       horaire_travail:Joi.string().allow(""),
       email: Joi.string().email({
@@ -220,7 +225,56 @@ module.exports = {
     })
   },
 
+  addrq: (rq, rs, nx) => {
+    let UserModel = mapper(userEntity, rq.body);
+    const schema = Joi.object().keys({
+          Id: Joi.string().optional().allow(""),
+          remarque: Joi.string().optional().allow(""),
+          State: Joi.boolean().optional().allow(""),
+          CreatedAt: Joi.string().optional().allow(""),
+          UpdatedAt: Joi.string().optional().allow("")
+    });
+
+    const {
+      error,
+      value
+    } = Joi.validate(rq.body, schema);
+
+    if (error != null) {
+      return rs
+        .status(400)
+        .json(responsRender(error, ServerErrors.INVALID_DATA, ""));
+    }
+       
+         UserModel.Id = uuid()
+          database.connectToDb()
+          userDataAccess.AddUser(UserModel, (err, rdv) => {
+            database.disconnect();
+            if (err) {
+              return rs.status(500).json(responsRender(err, ServerErrors.SERVER_ERROR, ""))
+            }else {
+              if (rdv) {
+            return rs.status(200).json(responsRender(rdv, "", ServerMessage.OK))
+              }}
+          })
+       
+   
+  },
 
 
+  getfile:(rq,rs,nx)=>{
+    {
+  rs.sendFile(__dirname+'images/uploads/'+rq.params.originalname)
+    }
+    
+  },
 
+
+  uploadfile: (req, res, nx)=> {
+    if (!req.file) return req.status(400).json(responsRender(null, ServerErrors.INVALID_FILE, ""))
+    // let allowedFormat = ['image/jpg', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
+    // if (allowedFormat.indexOf(req.file.mimetype) < 0) return next(createError(423, "Uploaded file is not a valid image. Only JPG and PNG files are allowed."));
+    let fileName = rTrim(process.env.APP_URL + ":" + process.env.PORT, "/") + "/images/uploads/" + req.file.filename;
+    return res.status(200).json(responsRender(fileName, null, ServerMessage.OK))
+}
 };

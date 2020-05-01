@@ -17,7 +17,7 @@ module.exports = {
     let UserModel = mapper(userEntity, rq.body);
     const schema = Joi.object().keys({
       Id: Joi.string().optional().allow(""),
-      nom: Joi.string().required().max(30).min(3).regex(/^[a-zA-Z_ ]+$/),
+      nom: Joi.string().optional().max(30).min(3).regex(/^[a-zA-Z_ ]+$/),
       prenom: Joi.string().optional().allow(""),
       address: Joi.string().optional().allow(""),
       date_naissance: Joi.date().optional().allow(""),
@@ -25,10 +25,11 @@ module.exports = {
       IsActive: Joi.boolean().optional().allow(""),
       tel: Joi.string().optional().allow(""),
       genre:Joi.string().optional().allow(""),
+      remarque:Joi.string().optional().allow(""),
       email: Joi.string().email({
         minDomainSegments: 2
-      }).required().max(50),
-      password: Joi.string().min(8).max(30).required(),
+      }).optional().allow("").max(50),
+      password: Joi.string().min(8).max(30).optional().allow(""),
       CreatedAt: Joi.string().optional().allow(""),
       UpdatedAt: Joi.string().optional().allow("")
     });
